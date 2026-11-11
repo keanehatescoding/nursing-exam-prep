@@ -32,7 +32,7 @@ Scaffolded as a Next.js 16 + Drizzle (Postgres) app, matching the stack used in 
 npm install
 # point .env at a Postgres instance, see .env.example
 npm run db:generate   # drizzle-kit: emit SQL migrations from the schema
-npm run db:migrate    # apply them (migrator script not yet included — copy from odpc-compliance-saas)
+npm run db:migrate    # apply them (uses scripts/migrate.ts, applying migrations from ./drizzle)
 npm run dev           # Next.js dev server on :3000
 ```
 
