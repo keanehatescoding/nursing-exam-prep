@@ -32,7 +32,7 @@ Scaffolded as a Next.js 16 + Drizzle (Postgres) app, matching the stack used in 
 npm install
 # point .env at a Postgres instance, see .env.example
 npm run db:generate   # drizzle-kit: emit SQL migrations from the schema
-npm run db:migrate    # apply them (migrator script not yet included — copy from odpc-compliance-saas)
+npm run db:migrate    # apply them (uses scripts/migrate.ts, applying migrations from ./drizzle)
 npm run dev           # Next.js dev server on :3000
 ```
 
@@ -46,4 +46,4 @@ What is still a stub:
 - `src/app/layout.tsx` + `src/app/page.tsx` — scaffold against the installed Next version (see `node_modules/next/dist/docs/`); the `odpc-compliance-saas` siblings are a working reference.
 - Auth (sessions, password reset, email verify) — copy and adapt the `lib/session.ts`, `lib/password.ts`, `lib/email-verification.ts` set from `odpc-compliance-saas`.
 - Payments (M-Pesa Daraja / Paystack / card) — stack-specific, add per project.
-- `scripts/migrate.ts`, `scripts/seed.ts` — not yet included; the `package.json` scripts expect them.
+- `scripts/seed.ts` — placeholder only; add seed data for councils, subjects, topics, and sample questions.
