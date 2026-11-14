@@ -89,24 +89,27 @@ async function main() {
     ];
 
     for (const q of questions) {
-      const { rows: existing } = await client.query<{ id: string }>(
-        "SELECT id FROM questions WHERE topic_id = $1 AND stem = $2",
+      const { rows: existing } = await client.query<{ id: string; kind: string }>(
+        "SELECT id, kind FROM questions WHERE topic_id = $1 AND stem = $2",
         [resolvedTopicId, q.stem],
       );
       let questionId = existing[0]?.id;
+      if (existing[0] && existing[0].kind !== "single") {
+        throw new Error(`Question "${q.stem}" already exists with kind ${existing[0].kind}; expected single`);
+      }
       if (!questionId) {
         questionId = q.id;
         await client.query(
-          `INSERT INTO questions (id, topic_id, kind, stem, explanation, reference, reviewed_by, reviewed_at, published, difficulty)
-           VALUES ($1, $2, 'single', $3, $4, $5, $6, NOW(), true, 2)`,
-          [questionId, resolvedTopicId, q.stem, q.explanation, q.reference, "Seed data (review required)"],
+          `INSERT INTO questions (id, topic_id, kind, stem, explanation, reference, published, difficulty)
+           VALUES ($1, $2, 'single', $3, $4, $5, true, 2)`,
+          [questionId, resolvedTopicId, q.stem, q.explanation, q.reference],
         );
       } else {
         await client.query(
           `UPDATE questions
-           SET explanation = $2, reference = $3, reviewed_by = $4, reviewed_at = NOW(), published = true, difficulty = 2
+           SET explanation = $2, reference = $3, difficulty = 2
            WHERE id = $1`,
-          [questionId, q.explanation, q.reference, "Seed data (review required)"],
+          [questionId, q.explanation, q.reference],
         );
       }
 
