@@ -33,17 +33,19 @@ npm install
 # point .env at a Postgres instance, see .env.example
 npm run db:generate   # drizzle-kit: emit SQL migrations from the schema
 npm run db:migrate    # apply them (uses scripts/migrate.ts, applying migrations from ./drizzle)
+npm run db:seed      # idempotent seed for a starter council/subject/topic and sample questions
 npm run dev           # Next.js dev server on :3000
 ```
 
 What is here:
 - `src/db/schema.ts` — Drizzle Postgres schema specific to this domain
 - `src/db/index.ts` — pooled `pg` + Drizzle client
+- `src/app/layout.tsx` + `src/app/page.tsx` — minimal placeholder shell so `next dev`/`next build` run; no question-bank UI yet
+- `scripts/migrate.ts` — applies Drizzle migrations from `./drizzle`
+- `scripts/seed.ts` — idempotent seed for a starter council/subject/topic and sample questions (requires `DATABASE_URL` and applied migrations)
 - `drizzle.config.ts`, `next.config.ts`, `tsconfig.json`, `eslint.config.mjs`, `postcss.config.mjs`
 - `src/app/globals.css`, `.gitignore`, `.env.example`
 
 What is still a stub:
-- `src/app/layout.tsx` + `src/app/page.tsx` — minimal placeholder shell so `next dev`/`next build` run; no question-bank UI yet (see `node_modules/next/dist/docs/`; the `odpc-compliance-saas` siblings are a working reference).
 - Auth (sessions, password reset, email verify) — copy and adapt the `lib/session.ts`, `lib/password.ts`, `lib/email-verification.ts` set from `odpc-compliance-saas`.
 - Payments (M-Pesa Daraja / Paystack / card) — stack-specific, add per project.
-- `scripts/seed.ts` — idempotent seed for a starter council/subject/topic and sample questions (requires `DATABASE_URL` and applied migrations).
