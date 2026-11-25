@@ -37,6 +37,14 @@ npm run db:seed      # idempotent seed for a starter council/subject/topic and s
 npm run dev           # Next.js dev server on :3000
 ```
 
+If you applied an earlier local baseline migration before the checked-in
+`drizzle/` journal existed, Drizzle may treat `0000_flippant_black_knight` as
+pending and fail on `CREATE TYPE` against that local database. This scaffold
+has no shared or production database yet, so the recovery is to drop and
+recreate your local database, then run `npm run db:migrate` and
+`npm run db:seed`. The seed script is idempotent. For any shared database
+with real data, reconcile the migration ledger instead of resetting it.
+
 What is here:
 - `src/db/schema.ts` — Drizzle Postgres schema specific to this domain
 - `src/db/index.ts` — pooled `pg` + Drizzle client
