@@ -7,7 +7,7 @@ async function main() {
     throw new Error("DATABASE_URL is not set");
   }
 
-  const pool = new Pool({ connectionString });
+  const pool = new Pool({ connectionString, connectionTimeoutMillis: 5_000 });
   const client = await pool.connect();
 
   try {
